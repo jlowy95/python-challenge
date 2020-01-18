@@ -16,7 +16,7 @@ import csv
 
 
 # Set the file path to "budget_data.csv" as "bd_filepath"
-budget_data_path as os.path.join("..","PyBank","budget_data.csv")
+bd_filepath = os.path.join("..","PyBank","budget_data.csv")
 
 # Variables
 # Initialize month counter to 0
@@ -25,14 +25,63 @@ months_count = 0
 net_total = 0
 # Average will be calculated as: (end value - initial value)/months_count
 # These values will be assigned within the csv file work loop
-# Change in p/l will be recorded by "delta_pl"
-# Greatest increase/decrease in p/l will be recorded by "great_p" and 
-# "great_l" respectively.  Their accompanying months will be recorded by
-# "great_p_month" and "great_l_month"
+# Greatest increase/decrease in p/l will be recorded by "profit_max" and 
+# "loss_max" respectively.  Their accompanying months will be recorded by
+# "profit_month" and "loss_month".  These will be initialized to the
+# first month's values.
+profit_max = 0
+loss_max = 0
 
 
 # Open the data file to be read as "budget_data"
-with open(, newline="") as budget_data:
+with open(bd_filepath, newline="") as budget_data:
 
     csvreader = csv.reader(budget_data, delimiter=",")
+
+    # Skip header row
+    header = next(csvreader)
+    #delta_temp = int(next(budget_data)[1])
+    #print(str(delta_temp))
+
+    for row in csvreader:
+        # Increment months_count each month
+        months_count += 1
+        # Iteratively sum the net total p/l
+        net_total += int(row[1])
+        
+        # For the first instance, initialize start, loss_month and profit_month by 
+        # checking if month_count == 1
+        if months_count == 1:
+            start = int(row[1])
+            profit_month = row[0]
+            loss_month = row[0]
+
+        # Record the end value by re-writing the same variable
+        end = int(row[1])
+
+        # Check for greatest p/l
+        if int(row[1]) > profit_max:
+            profit_max = int(row[1])
+            profit_month = row[0]
+        if int(row[1]) < loss_max:
+            loss_max = int(row[1])
+            loss_month = row[0]
+        
+    # Calculate the average p/l
+    average = net_total / months_count
+
+    # Print Results
+    print("Financial Analysis")
+    print("----------------------------")
+    print(f'Total Months: {months_count}')
+    print(f'Total: ${net_total}')
+    print(f'Average Change: ${average}')
+    print(f'Greatest Increase in Profits: {profit_month} (${profit_max})')
+    print(f'Greatest Decrease in Profits: {loss_month} (${loss_max})')
+
+
+# Write the results to a text file
+
+
+
 
