@@ -7,6 +7,7 @@
 # 3. average of the changes in "Profit/Losses" over the entire period
 # 4. greatest increase in profits (date and amount) over the entire period
 # 5. greatest decrease in losses (date and amount) over the entire period
+# Write the results to both the terminal and a text file
 
 
 # OS Library for compatibility across platforms reading file paths
@@ -31,6 +32,23 @@ net_total = 0
 # first month's values.
 profit_max = 0
 loss_max = 0
+
+
+# Results Function
+# Stores each line (string) of the desired results in a list.
+# Inputs are 'months_count', 'net_total', 'average', 'max_profit',
+# 'max_profit_month', 'min_profit', 'min_profit_month'
+def result_list(months_count, net_total, average, max_profit, max_profit_month, min_profit, min_profit_month):
+    results = [
+        "Financial Analysis",
+        "----------------------------",
+        'Total Months: ' + str(months_count),
+        'Total: $' + str(net_total),
+        'Average Change: $' + str(average),
+        'Greatest Increase in Profits: ' + max_profit_month + ' ($' + str(max_profit) + ')',
+        'Greatest Increase in Profits: ' + min_profit_month + ' ($' + str(min_profit) + ')'
+    ]
+    return results
 
 
 # Open the data file to be read as "budget_data"
@@ -70,18 +88,21 @@ with open(bd_filepath, newline="") as budget_data:
     # Calculate the average p/l
     average = net_total / months_count
 
-    # Print Results
-    print("Financial Analysis")
-    print("----------------------------")
-    print(f'Total Months: {months_count}')
-    print(f'Total: ${net_total}')
-    print(f'Average Change: ${average}')
-    print(f'Greatest Increase in Profits: {profit_month} (${profit_max})')
-    print(f'Greatest Decrease in Profits: {loss_month} (${loss_max})')
+
+# Print Results by using the result_list function from above
+results = result_list(months_count, net_total, average, profit_max, profit_month, loss_max, loss_month)
+for i in results:
+    print(i)
 
 
 # Write the results to a text file
 
+# Output path
+output_path = os.path.join("..","PyBank","financialanalysis.txt")
 
+with open(output_path, 'w') as analysis:
 
+    # Write results
+    for i in results:
+        analysis.write(i + '\n')
 
