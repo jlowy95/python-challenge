@@ -86,7 +86,7 @@ with open(bd_filepath, newline="") as budget_data:
             loss_month = row[0]
         
     # Calculate the average p/l
-    average = net_total / months_count
+    average = round(net_total / months_count,2)
 
 
 # Print Results by using the result_list function from above
