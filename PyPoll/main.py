@@ -47,7 +47,7 @@ def result_list(total_votes,candidates, votes_tally, winner_i):
         percent_temp = round(votes_tally[i] / total_votes * 100,3)
         results.append(candidates[i] + ":  " + str(percent_temp) + "%  (" + str(votes_tally[i]) + ")")
     results.append("----------------------------")
-    results.append("Winner:" + candidates[winner_i])
+    results.append("Winner: " + candidates[winner_i])
     results.append("----------------------------")
     return results
 
@@ -81,6 +81,7 @@ with open(election_data_path, newline='') as election_data:
 # Find the winner
 for i in range(len(votes_tally)):
     if votes_tally[i] > winner_temp:
+        winner_temp = votes_tally[i]
         winner_i = i
 
 # Print Results
