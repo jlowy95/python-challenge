@@ -46,7 +46,7 @@ def result_list(months_count, net_total, average, max_profit, max_profit_month, 
         'Total: $' + str(net_total),
         'Average Change: $' + str(average),
         'Greatest Increase in Profits: ' + max_profit_month + ' ($' + str(max_profit) + ')',
-        'Greatest Increase in Profits: ' + min_profit_month + ' ($' + str(min_profit) + ')'
+        'Greatest Decrease in Profits: ' + min_profit_month + ' ($' + str(min_profit) + ')'
     ]
     return results
 
@@ -74,6 +74,18 @@ with open(bd_filepath, newline="") as budget_data:
             profit_month = row[0]
             loss_month = row[0]
 
+        # Find the p/l for each month and average them
+        # Initialize during the 2nd month
+        if months_count == 2:
+            delta_sum = int(row[1]) - start
+            delta_temp = int(row[1])
+        
+        if months_count != 1:
+            delta_sum += int(row[1]) - delta_temp
+            # delta_temp set after to store the previous value for summing
+            delta_temp = int(row[1])
+
+
         # Record the end value by re-writing the same variable
         end = int(row[1])
 
@@ -86,7 +98,7 @@ with open(bd_filepath, newline="") as budget_data:
             loss_month = row[0]
         
     # Calculate the average p/l
-    average = round(net_total / months_count,2)
+    average = round(delta_sum / (months_count - 1),2)
 
 
 # Print Results by using the result_list function from above
