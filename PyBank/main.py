@@ -73,6 +73,9 @@ with open(bd_filepath, newline="") as budget_data:
             start = int(row[1])
             profit_month = row[0]
             loss_month = row[0]
+            profit_max = 0
+            loss_max = 0
+            delta_pl = 0
 
         # Find the p/l for each month and average them
         # Initialize during the 2nd month
@@ -82,6 +85,7 @@ with open(bd_filepath, newline="") as budget_data:
         
         if months_count != 1:
             delta_sum += int(row[1]) - delta_temp
+            delta_pl = int(row[1]) - delta_temp
             # delta_temp set after to store the previous value for summing
             delta_temp = int(row[1])
 
@@ -90,11 +94,11 @@ with open(bd_filepath, newline="") as budget_data:
         end = int(row[1])
 
         # Check for greatest p/l
-        if int(row[1]) > profit_max:
-            profit_max = int(row[1])
+        if delta_pl > profit_max:
+            profit_max = delta_pl
             profit_month = row[0]
-        if int(row[1]) < loss_max:
-            loss_max = int(row[1])
+        if delta_pl < loss_max:
+            loss_max = delta_pl
             loss_month = row[0]
         
     # Calculate the average p/l
